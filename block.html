@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Time Limit Reached</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 500px;
+        }
+        h1 {
+            color: #e53935;
+            margin-bottom: 1rem;
+        }
+        p {
+            color: #666;
+            line-height: 1.6;
+        }
+        .time {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Time Limit Reached</h1>
+        <p>You've reached your daily time limit for this website.</p>
+        <div class="time">
+            Time spent today: <span id="timeSpent">0m</span><br>
+            Daily limit: <span id="timeLimit">0m</span>
+        </div>
+        <p>Please come back tomorrow or adjust your limits in the extension settings.</p>
+    </div>
+    <script src="block.js"></script>
+</body>
+</html>
