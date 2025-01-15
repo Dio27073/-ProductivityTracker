@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Focus Mode</title>
+    <link rel="stylesheet" href="styles/focus.css">
+</head>
+<body>
+    <div class="container">
+        <div class="focus-controls">
+            <div class="timer-display">
+                <span id="timerDisplay">25:00</span>
+                <div class="timer-state" id="timerState">Ready to Focus</div>
+            </div>
+            
+            <div class="site-blocking">
+                <h3>Block Distracting Sites</h3>
+                <div class="site-list" id="siteList">
+                    <!-- Sites will be added here dynamically -->
+                </div>
+                
+                <div class="site-input">
+                    <input type="text" id="siteInput" placeholder="Enter website to block (e.g., facebook.com)">
+                    <button id="addSite">Add</button>
+                </div>
+                
+                <div class="quick-add">
+                    <button data-site="facebook.com">+ Facebook</button>
+                    <button data-site="twitter.com">+ Twitter</button>
+                    <button data-site="instagram.com">+ Instagram</button>
+                    <button data-site="youtube.com">+ YouTube</button>
+                    <button data-site="reddit.com">+ Reddit</button>
+                    <button data-site="netflix.com">+ Netflix</button>
+                </div>
+            </div>
+
+            <div class="focus-options">
+                <h3>Options</h3>
+                <label>
+                    <input type="checkbox" id="autoStartBreak">
+                    Automatically start break when focus session ends
+                </label>
+                <label>
+                    <input type="checkbox" id="notifications" checked>
+                    Show desktop notifications
+                </label>
+            </div>
+            
+            <div class="timer-buttons">
+                <button id="startFocus" class="focus-button">Start Focus (25m)</button>
+                <button id="startBreak" class="focus-button" disabled>Take Break (5m)</button>
+                <button id="stopTimer" class="focus-button danger" disabled>Stop</button>
+            </div>
+        </div>
+        
+        <div class="focus-quote" id="focusQuote"></div>
+    </div>
+
+    <script type="module" src="components/focus.js"></script>
+</body>
+</html>

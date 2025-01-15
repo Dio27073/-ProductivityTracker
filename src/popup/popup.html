@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Website Productivity Tracker</title>
+    <link rel="stylesheet" href="styles/popup.css">
+</head>
+<body>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div id="totalTime" class="stat-value">0h 0m</div>
+            <div class="stat-label">Total Time Today</div>
+        </div>
+        <div class="stat-card">
+            <div id="topSite" class="stat-value">-</div>
+            <div class="stat-label">Most Visited</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Today's Activity</div>
+        <div id="barChart" class="bar-chart"></div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">Site Limits</div>
+        <form id="limitForm" class="limit-form">
+            <input type="text" id="site" placeholder="Enter website domain" required>
+            <input type="number" id="minutes" placeholder="Minutes" required min="1">
+            <button type="submit">Set</button>
+        </form>
+        <div id="limitsList"></div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Focus Mode</div>
+        <div class="focus-controls">
+            <div class="timer-display">
+                <span id="timerDisplay">25:00</span>
+                <div class="timer-state" id="timerState">Ready to Focus</div>
+            </div>
+            
+            <div class="site-blocking">
+                <h3>Block Distracting Sites</h3>
+                <div class="site-list" id="siteList"></div>
+                
+                <div class="site-input">
+                    <input type="text" id="siteInput" placeholder="Enter website to block (e.g., facebook.com)">
+                    <button id="addSite">Add</button>
+                </div>
+                
+                <div class="quick-add">
+                    <button data-site="facebook.com">+ Facebook</button>
+                    <button data-site="twitter.com">+ Twitter</button>
+                    <button data-site="instagram.com">+ Instagram</button>
+                    <button data-site="youtube.com">+ YouTube</button>
+                    <button data-site="reddit.com">+ Reddit</button>
+                </div>
+            </div>
+
+            <div class="focus-options">
+                <label>
+                    <input type="checkbox" id="autoStartBreak">
+                    Auto-start break when focus ends
+                </label>
+                <label>
+                    <input type="checkbox" id="notifications" checked>
+                    Show notifications
+                </label>
+            </div>
+            
+            <div class="timer-buttons">
+                <button id="startFocus" class="focus-button">Start Focus (25m)</button>
+                <button id="startBreak" class="focus-button" disabled>Take Break (5m)</button>
+                <button id="stopTimer" class="focus-button danger" disabled>Stop</button>
+            </div>
+        </div>
+        
+        <div class="focus-quote" id="focusQuote"></div>
+    </div>
+
+    <script type="module" src="components/popup.js"></script>
+</body>
+</html>

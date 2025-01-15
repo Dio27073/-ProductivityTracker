@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Time Limit Reached</title>
+    <link rel="stylesheet" href="styles/block.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Time Limit Reached</h1>
+        <p id="mainMessage">You've reached your daily time limit for this website.</p>
+        
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-label">Time Spent Today</div>
+                <div class="stat-value" id="timeSpent">0m</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Daily Limit</div>
+                <div class="stat-value" id="timeLimit">0m</div>
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="stat-label">Daily Progress</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+        </div>
+        
+        <div class="suggestions">
+            <h2>What you can do instead:</h2>
+            <ul id="suggestions">
+                <li>Take a short break and stretch</li>
+                <li>Work on your most important task for 25 minutes</li>
+                <li>Go for a quick walk</li>
+                <li>Drink some water and practice deep breathing</li>
+            </ul>
+        </div>
+        
+        <div class="focus-mode">
+            <h2>Want to be more productive?</h2>
+            <p>Start a focused work session to make the most of your time.</p>
+            <button id="startFocus">Start 25min Focus Session</button>
+        </div>
+        
+        <p class="warning">Note: This block will reset at midnight in your local time zone.</p>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Get the blocked domain from URL parameters
+                const params = new URLSearchParams(window.location.search);
+                const domain = params.get('domain');
+                const reason = params.get('reason');
+                
+                if (domain || reason === 'focus') {
+                    const data = await chrome.storage.local.get(['timeData', 'siteLimits']);
+                    const today = new Date().toISOString().split('T')[0];
+                    
+                    if (reason === 'focus') {
+                        document.querySelector('h1').textContent = 'Focus Mode Active';
+                        document.getElementById('mainMessage').textContent = 
+                            'This site is blocked during your focus session.';
+                    } else {
+                        const timeSpent = data.timeData?.[today]?.domains?.[domain]?.totalTime || 0;
+                        const limit = data.siteLimits?.[domain] || 0;
+                        
+                        // Update statistics
+                        document.getElementById('timeSpent').textContent = 
+                            `${Math.round(timeSpent / 60)}m`;
+                        document.getElementById('timeLimit').textContent = 
+                            `${limit}m`;
+                        
+                        // Update progress bar
+                        const percentage = Math.min((timeSpent / (limit * 60)) * 100, 100);
+                        document.getElementById('progressBar').style.width = `${percentage}%`;
+                        
+                        // Update title
+                        document.querySelector('h1').textContent = 
+                            `Time Limit Reached for ${domain}`;
+                        
+                        // Customize suggestions based on the domain
+                        customizeSuggestions(domain);
+                    }
+
+                    // Prevent navigation back to the blocked site
+                    history.pushState(null, '', window.location.href);
+                    window.addEventListener('popstate', () => {
+                        history.pushState(null, '', window.location.href);
+                    });
+                }
+                
+                // Add focus mode button handler
+                document.getElementById('startFocus').addEventListener('click', () => {
+                    chrome.runtime.sendMessage({
+                        type: 'START_FOCUS',
+                        duration: 25 * 60
+                    });
+                });
+                
+            } catch (error) {
+                console.error('Error in block.js:', error);
+            }
+        });
+
+        function customizeSuggestions(domain) {
+            const socialMediaSuggestions = [
+                'Write in your journal instead',
+                'Call a friend or family member',
+            ];
+            
+            const productivitySuggestions = [
+                'Review your to-do list',
+                'Clean up your workspace',
+                'Reply to important emails',
+                'Plan your next project milestone'
+            ];
+            
+            const entertainmentSuggestions = [
+                'Do a quick workout',
+                'Learn something new on an educational site',
+                'Work on a personal project',
+                'Practice meditation or mindfulness'
+            ];
+            
+            let suggestions;
+            if (domain.includes('facebook') || domain.includes('twitter') || 
+                domain.includes('instagram')) {
+                suggestions = socialMediaSuggestions;
+            } else if (domain.includes('youtube') || domain.includes('netflix') || 
+                      domain.includes('reddit')) {
+                suggestions = entertainmentSuggestions;
+            } else {
+                suggestions = productivitySuggestions;
+            }
+            
+            const suggestionsList = document.getElementById('suggestions');
+            suggestionsList.innerHTML = suggestions
+                .map(suggestion => `<li>${suggestion}</li>`)
+                .join('');
+        }
+    </script>
+</body>
+</html>

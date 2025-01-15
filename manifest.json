@@ -7,29 +7,35 @@
     "tabs",
     "alarms",
     "notifications",
-    "activeTab",
     "declarativeNetRequest",
-    "declarativeNetRequestFeedback"
+    "declarativeNetRequestFeedback",
+    "activeTab"
   ],
   "host_permissions": [
     "<all_urls>"
   ],
   "background": {
-    "service_worker": "background.js",
+    "service_worker": "src/background/index.js",
     "type": "module"
   },
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "src/popup/popup.html"
   },
   "web_accessible_resources": [{
-    "resources": ["block.html", "block.js", "focus.js"],
+    "resources": [
+      "src/block/*",
+      "src/focus/*",
+      "src/popup/*",
+      "src/background/*",
+      "assets/*"
+    ],
     "matches": ["<all_urls>"]
   }],
   "declarative_net_request": {
     "rule_resources": [{
       "id": "ruleset_1",
       "enabled": true,
-      "path": "rules.json"
+      "path": "src/config/rules.json"
     }]
   }
 }
